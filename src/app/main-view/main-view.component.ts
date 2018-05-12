@@ -45,10 +45,6 @@ export class MainViewComponent implements OnInit {
     this.hierarchialGraph = hierarchialGraph;
   }
 
- /*  ngOnChanges(changes) {
-    console.log(changes);
-  } */
-
   applyDimensions() {
     this.view = [this.width, this.height];
   }
@@ -62,10 +58,6 @@ export class MainViewComponent implements OnInit {
       this.isNewGraph = true;
     }
   }
-
- /*  onLegendLabelClick(event) {
-    console.log(event);
-  } */
 
   select(node) {
     this.createNode();
