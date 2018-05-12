@@ -5,7 +5,6 @@ export interface CurrentView {
   graph: boolean;
 }
 
-
 @Component({
   selector: 'app-main-controls',
   templateUrl: './main-controls.component.html',

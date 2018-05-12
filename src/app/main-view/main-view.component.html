@@ -6,7 +6,7 @@
   Label: <input id="label" name="label" type="text" pInputText [(ngModel)]="newNodeLabel" required #label="ngModel">
   <div class="button-section">
     <p-button class="save-node-button" label="Saglabat node" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
-    <p-button styleClass="ui-button-danger" label="Decline" (onClick)="hideDialog()"></p-button>
+    <p-button styleClass="ui-button-danger" label="Atcelšana" (onClick)="hideDialog()"></p-button>
   </div>
 </p-card>
 
