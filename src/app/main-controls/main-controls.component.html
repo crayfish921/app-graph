@@ -1,0 +1,10 @@
+<p-toolbar>
+  <div class="ui-toolbar-group-left" *ngIf="currentView.graph">
+      <button pButton type="button" label="Jauns grafs" icon="fa-plus" (click)="newGraphClick()"></button>
+      <button pButton type="button" label="Atvert grafu" icon="fa-folder-open"></button>
+  </div>
+  <i class="delimeter fa fa-bars"></i>
+  <!-- <div class="menu-options">
+      <button pButton type="button" label="Pie chart" (click)="changeToPieChartView()"></button>
+  </div> -->
+</p-toolbar>
