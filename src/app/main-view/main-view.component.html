@@ -1,9 +1,13 @@
 <app-main-controls (newGraph)="createNewGraph($event)"></app-main-controls>
 
-<p-button class="new-node-button" label="Pievienot start node" *ngIf="newGraph" (onClick)="createNode()"></p-button>
+<p-button class="new-node-button" label="Pievienot start node" *ngIf="isNewGraph" (onClick)="createNode()"></p-button>
 
 <p-card title="Jauns node" *ngIf="showNodeCreationDialog">
-
+  Label: <input id="label" name="label" type="text" pInputText [(ngModel)]="newNodeLabel" required #label="ngModel">
+  <div class="button-section">
+    <p-button class="save-node-button" label="Saglabat node" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
+    <p-button styleClass="ui-button-danger" label="Decline" (onClick)="hideDialog()"></p-button>
+  </div>
 </p-card>
 
 <ngx-graph

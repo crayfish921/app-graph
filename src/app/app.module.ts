@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import {CardModule} from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MainControlsComponent } from './main-controls/main-controls.component';
@@ -28,7 +30,10 @@ import { MainViewComponent } from './main-view/main-view.component';
     ToolbarModule,
     ButtonModule,
     MenuModule,
-    CardModule
+    CardModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

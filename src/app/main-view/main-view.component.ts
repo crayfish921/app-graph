@@ -1,9 +1,19 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import * as shape from 'd3-shape';
 
+export interface Node {
+  id: string;
+  label: string;
+}
+
+export interface Link {
+  source: string;
+  target: string;
+}
+
 export interface GraphObject {
-  nodes: Array<Object>;
-  links: Array<Object>;
+  nodes: Array<Node>;
+  links: Array<Link>;
 }
 
 @Component({
@@ -14,8 +24,11 @@ export interface GraphObject {
 
 export class MainViewComponent implements OnInit, OnChanges {
 
+  nextNodeConfiguration;
+  newNodeLabel: string;
+  nodeInfo: string;
   showNodeCreationDialog = false;
-  newGraph = false;
+  isNewGraph = false;
   width = 1800;
   height = 500;
   view: any[];
@@ -97,7 +110,7 @@ export class MainViewComponent implements OnInit, OnChanges {
         nodes: [],
         links: []
       };
-      this.newGraph = true;
+      this.isNewGraph = true;
     }
   }
 
@@ -105,12 +118,57 @@ export class MainViewComponent implements OnInit, OnChanges {
     console.log(event);
   }
 
-  select(event) {
-    console.log(event);
+  select(node) {
+    this.createNode();
+    const nextNodeId = this.hierarchialGraph.nodes.length > 1 ?
+    `${(parseInt(this.hierarchialGraph.nodes[this.hierarchialGraph.nodes.length - 1].id, 10) + 1)}` : '1';
+    const nextLink = {
+      source: node.id,
+      target: nextNodeId
+    };
+
+    const nextNode = {
+      id: nextNodeId,
+      label: ''
+    };
+
+    this.nextNodeConfiguration = {
+      link: nextLink,
+      node: nextNode
+    };
+
+    console.log(this.nextNodeConfiguration);
   }
 
   createNode() {
     this.showNodeCreationDialog = true;
+    this.newNodeLabel = '';
   }
 
+
+  hideDialog() {
+    this.showNodeCreationDialog = false;
+    this.newNodeLabel = '';
+  }
+
+  finalizeCreation () {
+    if (!this.isNewGraph) {
+      this.nextNodeConfiguration.node.label = this.newNodeLabel;
+      this.hierarchialGraph.links = [...this.hierarchialGraph.links, this.nextNodeConfiguration.link];
+      this.hierarchialGraph.nodes = [...this.hierarchialGraph.nodes, this.nextNodeConfiguration.node];
+    }
+
+    if (this.isNewGraph) {
+      const newNode = {
+        id: 'start',
+        label: this.newNodeLabel
+      };
+
+      this.hierarchialGraph.nodes = [...this.hierarchialGraph.nodes, newNode];
+      this.isNewGraph = false;
+    }
+
+    this.newNodeLabel = '';
+    this.showNodeCreationDialog = false;
+  }
 }
