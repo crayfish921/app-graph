@@ -23,7 +23,7 @@ export interface GraphObject {
   styleUrls: ['./main-view.component.scss']
 })
 
-export class MainViewComponent implements OnInit, OnChanges {
+export class MainViewComponent implements OnInit {
 
   nextNodeConfiguration;
   newNodeLabel: string;
@@ -45,16 +45,16 @@ export class MainViewComponent implements OnInit, OnChanges {
     this.hierarchialGraph = hierarchialGraph;
   }
 
-  ngOnChanges(changes) {
+ /*  ngOnChanges(changes) {
     console.log(changes);
-  }
+  } */
 
   applyDimensions() {
     this.view = [this.width, this.height];
   }
 
-  createNewGraph(e) {
-    if (e) {
+  createNewGraph(event) {
+    if (event) {
       this.hierarchialGraph = {
         nodes: [],
         links: []
@@ -63,9 +63,9 @@ export class MainViewComponent implements OnInit, OnChanges {
     }
   }
 
-  onLegendLabelClick(event) {
+ /*  onLegendLabelClick(event) {
     console.log(event);
-  }
+  } */
 
   select(node) {
     this.createNode();
@@ -85,8 +85,6 @@ export class MainViewComponent implements OnInit, OnChanges {
       link: nextLink,
       node: nextNode
     };
-
-    console.log(this.nextNodeConfiguration);
   }
 
   createNode() {
