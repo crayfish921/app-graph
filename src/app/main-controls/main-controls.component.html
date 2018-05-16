@@ -1,11 +1,21 @@
 <p-toolbar>
   <div class="ui-toolbar-group-left" *ngIf="currentView.graph">
-      <button pButton type="button" label="Jauns grafs" icon="fa-plus" (click)="newGraphClick()"></button>
-      <button pButton type="button" label="Atvert grafu" icon="fa-folder-open"></button>
-      <button pButton type="button" label="Saglabat grafu" icon="fa-save"></button>
+    <button pButton type="button" label="Jauns grafs" icon="fa-plus" (click)="newGraphClick()"></button>
+    <button pButton type="button" label="Atvert grafu" icon="fa-folder-open"></button>
+    <button pButton type="button" label="Saglabat grafu" icon="fa-save"></button>
   </div>
-  <i class="delimeter fa fa-bars"></i>
-  <!-- <div class="menu-options">
-      <button pButton type="button" label="Pie chart" (click)="changeToPieChartView()"></button>
-  </div> -->
+
+  <div class="ui-toolbar-group-left" *ngIf="currentView.pieChart">
+    <button pButton type="button" label="Jauns pie chart" icon="fa-plus" (click)="newPieChartClick()"></button>
+    <button pButton type="button" label="Atvert pie chart" icon="fa-folder-open"></button>
+    <button pButton type="button" label="Saglabat pie chart" icon="fa-save"></button>
+  </div>
+
+  <div class="options">
+    <i class="delimeter fa fa-bars"></i>
+    <div class="menu-options">
+      <button pButton type="button" label="Pie chart" (click)="changeToPieChartView()" *ngIf="!currentView.pieChart"></button>
+      <button pButton type="button" label="Graph" (click)="changeToGraphView()" *ngIf="!currentView.graph"></button>
+    </div>
+  </div>
 </p-toolbar>
