@@ -51,3 +51,31 @@ export const hierarchialGraph = {
         }
     ]
 };
+
+
+export const pieChart = [
+    {
+      'name': 'Information1',
+      'value': 60632
+    },
+    {
+      'name': 'Information2',
+      'value': 49737
+    },
+    {
+      'name': 'Information3',
+      'value': 36745
+    },
+    {
+      'name': 'Information4',
+      'value': 36240
+    },
+    {
+      'name': 'Information5',
+      'value': 33000
+    },
+    {
+      'name': 'Information6',
+      'value': 35800
+    }
+  ];

@@ -1,60 +1,81 @@
 <app-main-controls 
   (newGraph)="createNewGraph($event)" 
-  (currentViewStatus)="newView($event)" 
+  (currentViewStatus)="changeView($event)" 
   (newPieChart)="createNewPieChart($event)">
 </app-main-controls>
 
-<p-button class="new-node-button" label="Pievienot start node" *ngIf="isNewGraph" (onClick)="createNode()"></p-button>
 
-<p-card title="Jauns node" *ngIf="showNodeCreationDialog">
-  Nosaukums: <input id="label" name="label" type="text" pInputText [(ngModel)]="newNodeLabel" required #label="ngModel">
-  <div class="button-section">
-    <p-button class="save-node-button" label="Saglabat node" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
-    <p-button styleClass="ui-button-danger" label="Atcelšana" (onClick)="hideDialog()"></p-button>
-  </div>
-</p-card>
+<div *ngIf="currentView.graph">
+  <p-button class="new-node-button" label="Pievienot start node" *ngIf="isNewGraph" (onClick)="createNode()"></p-button>
 
-<ngx-graph
-  class="chart-container"
-  [view]="view"
-  [legend]="true"
-  [links]="hierarchialGraph.links"
-  [nodes]="hierarchialGraph.nodes"
-  [scheme]="{
-    name: 'vivid',
-    selectable: true,
-    group: 'Ordinal',
-    domain: [
-    '#647c8a', '#3f51b5', '#2196f3', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514'
-    ]
-  }"
-  orientation="LR"
-  [curve]="curve"
-  (select)="select($event)">
+  <p-card title="Jauns node" *ngIf="showNodeCreationDialog">
+    Nosaukums: <input id="label" name="label" type="text" pInputText [(ngModel)]="newNodeLabel" required #label="ngModel">
+    <div class="button-section">
+      <p-button class="save-node-button" label="Saglabat node" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
+      <p-button styleClass="ui-button-danger" label="Atcelšana" (onClick)="hideDialog()"></p-button>
+    </div>
+  </p-card>
 
-  <ng-template #defsTemplate>
-    <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-      <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
-    </svg:marker>
-  </ng-template>
+  <ngx-graph
+    class="chart-container"
+    [view]="view"
+    [legend]="true"
+    [links]="hierarchialGraph.links"
+    [nodes]="hierarchialGraph.nodes"
+    [scheme]="{
+      name: 'vivid',
+      selectable: true,
+      group: 'Ordinal',
+      domain: [
+      '#647c8a', '#3f51b5', '#2196f3', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514'
+      ]
+    }"
+    orientation="LR"
+    [curve]="curve"
+    (select)="select($event)">
 
-  <ng-template #nodeTemplate let-node>
-    <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
-      <svg:rect [attr.width]="node.width" [attr.height]="node.height" [attr.fill]="node.options.color" />
-      <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.height / 2">{{node.label}}</svg:text>
-    </svg:g>
-  </ng-template>
+    <ng-template #defsTemplate>
+      <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+      </svg:marker>
+    </ng-template>
 
-  <ng-template #linkTemplate let-link>
-    <svg:g class="edge">
-      <svg:path class="line" stroke-width="2" marker-end="url(#arrow)">
-      </svg:path>
-      <svg:text class="edge-label" text-anchor="middle">
-        <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
-          {{link.label}}
-        </textPath>
-      </svg:text>
-    </svg:g>
-  </ng-template>
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
+        <svg:rect [attr.width]="node.width" [attr.height]="node.height" [attr.fill]="node.options.color" />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.height / 2">{{node.label}}</svg:text>
+      </svg:g>
+    </ng-template>
 
-</ngx-graph>
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2" marker-end="url(#arrow)">
+        </svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
+            {{link.label}}
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
+  </ngx-graph>
+</div>
+
+<div *ngIf="currentView.pieChart">
+  <ngx-charts-pie-chart 
+    [labels]="true"
+    [legend]="true"
+    legendTitle="Dati"
+    [results]="pieChart"
+    [view]="view"
+    [scheme]="{
+      name: 'vivid',
+      selectable: true,
+      group: 'Ordinal',
+      domain: [
+      '#647c8a', '#3f51b5', '#2196f3', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514'
+      ]
+    }">
+  </ngx-charts-pie-chart>
+</div>

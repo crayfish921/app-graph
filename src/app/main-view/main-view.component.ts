@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import {hierarchialGraph} from '../models';
+import {hierarchialGraph, pieChart} from '../models';
 import * as shape from 'd3-shape';
+import { CurrentView } from '../main-controls/main-controls.component';
 
 export interface Node {
   id: string;
@@ -25,6 +26,11 @@ export interface GraphObject {
 
 export class MainViewComponent implements OnInit {
 
+  currentView: CurrentView = {
+    graph: false,
+    pieChart: false
+  };
+  pieChart;
   nextNodeConfiguration;
   newNodeLabel: string;
   nodeInfo: string;
@@ -39,9 +45,11 @@ export class MainViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.currentView.graph = true;
 
     this.applyDimensions();
 
+    this.pieChart = pieChart;
     this.hierarchialGraph = hierarchialGraph;
   }
 
@@ -57,6 +65,16 @@ export class MainViewComponent implements OnInit {
       };
       this.isNewGraph = true;
     }
+  }
+
+  createNewPieChart(event) {
+    if (event) {
+      this.pieChart = [];
+    }
+  }
+
+  changeView(event) {
+    this.currentView = event;
   }
 
   select(node) {
