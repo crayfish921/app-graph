@@ -1,4 +1,6 @@
 <app-main-controls 
+  [graphUri]="graphUri"
+  [pieChartUri]="pieChartUri"
   (newGraph)="createNewGraph($event)" 
   (currentViewStatus)="changeView($event)" 
   (newPieChart)="createNewPieChart($event)">
@@ -6,12 +8,12 @@
 
 
 <div *ngIf="currentView.graph">
-  <p-button class="new-node-button" label="Pievienot start node" *ngIf="isNewGraph" (onClick)="createNode()"></p-button>
+  <p-button class="new-node-button" label="Pievienot sakuma mezglu" *ngIf="isNewGraph" (onClick)="createNode()"></p-button>
 
   <p-card title="Jauns node" *ngIf="showNodeCreationDialog">
     Nosaukums: <input id="label" name="label" type="text" pInputText [(ngModel)]="newNodeLabel" required #label="ngModel">
     <div class="button-section">
-      <p-button class="save-node-button" label="Saglabat node" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
+      <p-button class="save-node-button" label="Saglabat" [disabled]="label.invalid" (onClick)="finalizeCreation()"></p-button>
       <p-button styleClass="ui-button-danger" label="Atcelšana" (onClick)="hideDialog()"></p-button>
     </div>
   </p-card>
@@ -63,11 +65,24 @@
 </div>
 
 <div *ngIf="currentView.pieChart">
+
+    <p-button class="new-slice-button" label="Pievienot jaunu sektoru diagrammas gabalu" (onClick)="createPieSlice()"></p-button>
+
+    <p-card title="Jauns sektoru diagrammas gabals" *ngIf="showSliceCreatingDialog">
+      Nosaukums: <input id="sliceLabel" name="sliceLabel" type="text" pInputText [(ngModel)]="newSliceLabel" required #sliceLabel="ngModel">
+      Vertiba: <input id="value" name="value" type="text" pInputText [(ngModel)]="newSliceValue" required pattern="[0-9]*" #value="ngModel">
+      <div class="button-section">
+        <p-button class="save-node-button" label="Saglabat" [disabled]="sliceLabel.invalid || value.invalid" (onClick)="finalizeSlice()"></p-button>
+        <p-button styleClass="ui-button-danger" label="Aizvērt" (onClick)="hideDialog()"></p-button>
+      </div>
+    </p-card>
+
   <ngx-charts-pie-chart 
     [labels]="true"
-    [legend]="true"
+    [legend]="pieChart?.length > 0"
     legendTitle="Dati"
     [results]="pieChart"
+    [activeEntries]="activePieChart"
     [view]="view"
     [scheme]="{
       name: 'vivid',
@@ -78,4 +93,5 @@
       ]
     }">
   </ngx-charts-pie-chart>
+
 </div>

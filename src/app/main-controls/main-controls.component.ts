@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { pieChart } from '../models';
 
 export interface CurrentView {
   pieChart: boolean;
@@ -19,12 +20,15 @@ export class MainControlsComponent implements OnInit {
     pieChart: false
   };
 
+  @Input() graphUri;
+  @Input() pieChartUri;
+
   @Output() newGraph = new EventEmitter();
   @Output() newPieChart = new EventEmitter();
   @Output() currentViewStatus = new EventEmitter();
 
   ngOnInit() {
-    this.currentView.graph = true;
+    this.currentView.pieChart = true;
   }
 
   newGraphClick() {

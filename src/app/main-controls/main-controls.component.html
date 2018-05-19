@@ -2,20 +2,20 @@
   <div class="ui-toolbar-group-left" *ngIf="currentView.graph">
     <button pButton type="button" label="Jauns grafs" icon="fa-plus" (click)="newGraphClick()"></button>
     <button pButton type="button" label="Atvert grafu" icon="fa-folder-open"></button>
-    <button pButton type="button" label="Saglabat grafu" icon="fa-save"></button>
+    <a [href]="graphUri" download="graph.json"><button pButton type="button" label="Saglabat grafu" icon="fa-save"></button></a>
   </div>
 
   <div class="ui-toolbar-group-left" *ngIf="currentView.pieChart">
-    <button pButton type="button" label="Jauns pie chart" icon="fa-plus" (click)="newPieChartClick()"></button>
-    <button pButton type="button" label="Atvert pie chart" icon="fa-folder-open"></button>
-    <button pButton type="button" label="Saglabat pie chart" icon="fa-save"></button>
+    <button pButton type="button" label="Jauna sektoru diagramma" icon="fa-plus" (click)="newPieChartClick()"></button>
+    <button pButton type="button" label="Atvert sektoru diagrammu" icon="fa-folder-open"></button>
+    <a [href]="pieChartUri" download="pieChart.json"><button pButton type="button" label="Saglabat sektoru diagrammu" icon="fa-save"></button></a>
   </div>
 
   <div class="options">
     <i class="delimeter fa fa-bars"></i>
     <div class="menu-options">
-      <button pButton type="button" label="Pie chart" (click)="changeToPieChartView()" *ngIf="!currentView.pieChart"></button>
-      <button pButton type="button" label="Graph" (click)="changeToGraphView()" *ngIf="!currentView.graph"></button>
+      <button pButton type="button" label="Sektoru diagramma" (click)="changeToPieChartView()" *ngIf="!currentView.pieChart"></button>
+      <button pButton type="button" label="Grafs" (click)="changeToGraphView()" *ngIf="!currentView.graph"></button>
     </div>
   </div>
 </p-toolbar>

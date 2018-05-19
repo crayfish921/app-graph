@@ -1,7 +1,8 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import {hierarchialGraph, pieChart} from '../models';
+import { Component, OnInit} from '@angular/core';
+import { hierarchialGraph, pieChart } from '../models';
 import * as shape from 'd3-shape';
 import { CurrentView } from '../main-controls/main-controls.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface Node {
   id: string;
@@ -30,7 +31,16 @@ export class MainViewComponent implements OnInit {
     graph: false,
     pieChart: false
   };
+
+  pieChartUri;
+  graphUri;
+
+  activePieChart;
   pieChart;
+  showSliceCreatingDialog = false;
+  newSliceLabel: string;
+  newSliceValue: number;
+
   nextNodeConfiguration;
   newNodeLabel: string;
   nodeInfo: string;
@@ -42,16 +52,28 @@ export class MainViewComponent implements OnInit {
   colorScheme: any;
   curve: any = shape.curveLinear;
   hierarchialGraph: GraphObject;
-  constructor() { }
+
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.currentView.graph = true;
+    this.currentView.pieChart = true;
 
     this.applyDimensions();
 
     this.pieChart = pieChart;
     this.hierarchialGraph = hierarchialGraph;
+
+    this.pieChartUri = this.generateDownloadJsonUri(this.pieChart);
+    this.graphUri = this.generateDownloadJsonUri(this.hierarchialGraph);
   }
+
+  generateDownloadJsonUri(json) {
+    const theJSON = JSON.stringify(json);
+    const blob = new Blob([theJSON], { type: 'text/json' });
+    const url = window.URL.createObjectURL(blob);
+    const uri = this.sanitizer.bypassSecurityTrustUrl(url);
+    return uri;
+}
 
   applyDimensions() {
     this.view = [this.width, this.height];
@@ -64,12 +86,14 @@ export class MainViewComponent implements OnInit {
         links: []
       };
       this.isNewGraph = true;
+      this.graphUri = this.generateDownloadJsonUri(this.hierarchialGraph);
     }
   }
 
   createNewPieChart(event) {
     if (event) {
       this.pieChart = [];
+      this.pieChartUri = this.generateDownloadJsonUri(this.pieChart);
     }
   }
 
@@ -102,10 +126,23 @@ export class MainViewComponent implements OnInit {
     this.newNodeLabel = '';
   }
 
+  createPieSlice() {
+    this.showSliceCreatingDialog = true;
+    this.newSliceLabel = '';
+  }
 
   hideDialog() {
+    this.showSliceCreatingDialog = false;
     this.showNodeCreationDialog = false;
     this.newNodeLabel = '';
+  }
+
+  finalizeSlice() {
+    this.activePieChart = [...this.pieChart, {name: this.newSliceLabel, value: this.newSliceValue}];
+    this.pieChart = this.activePieChart;
+    this.newSliceLabel = '';
+    this.newSliceValue = undefined;
+    this.pieChartUri = this.generateDownloadJsonUri(this.pieChart);
   }
 
   finalizeCreation () {
@@ -113,9 +150,7 @@ export class MainViewComponent implements OnInit {
       this.nextNodeConfiguration.node.label = this.newNodeLabel;
       this.hierarchialGraph.links = [...this.hierarchialGraph.links, this.nextNodeConfiguration.link];
       this.hierarchialGraph.nodes = [...this.hierarchialGraph.nodes, this.nextNodeConfiguration.node];
-    }
-
-    if (this.isNewGraph) {
+    } else {
       const newNode = {
         id: 'start',
         label: this.newNodeLabel
@@ -127,5 +162,6 @@ export class MainViewComponent implements OnInit {
 
     this.newNodeLabel = '';
     this.showNodeCreationDialog = false;
+    this.graphUri = this.generateDownloadJsonUri(this.hierarchialGraph);
   }
 }
